@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class AppController extends Controller
 {
   private $env_text = "";
-  private $git_repo = "https://github.com/billdevmaster/my-history";
+  private $git_repo = "https://github.com/billdevmaster/booking_demo";
   /**
    * Create a new controller instance.
    *
@@ -22,7 +22,8 @@ class AppController extends Controller
   {
     chdir(env('NEW_APP_DIR'));
     exec("git clone " . $this->git_repo);
-    rename('my-history', $request->input('app_data')['APP_NAME']);
+    exec("mv my-history " . $request->input('app_data')['APP_NAME']);
+    // rename('my-history', $request->input('app_data')['APP_NAME']);
     // copy('PATTERN/index.php', $Username.'/index.php');
     var_dump($request->input('app_data'));
   }
