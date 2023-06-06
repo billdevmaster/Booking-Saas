@@ -5,8 +5,9 @@ import router from './router'
 import CoreuiVue from '@coreui/vue'
 import { iconsSet as icons } from './assets/icons/icons.js'
 import store from './store'
+import constants from './constants'
 
-Vue.prototype.$apiAdress = process.env.VUE_APP_API_URL
+Vue.prototype.$apiAdress = constants.API_URL
 Vue.config.performance = true
 Vue.use(CoreuiVue)
 

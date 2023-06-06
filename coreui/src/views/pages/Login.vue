@@ -62,40 +62,42 @@
 
 import axios from "axios";
 
-    export default {
-      name: 'Login',
-      data() {
-        return {
-          email: '',
-          password: '',
-          showMessage: false,
-          message: '',
-        }
-      },
-      methods: {
-        goRegister(){
-          this.$router.push({ path: 'register' });
-        },
-        login() {
-          let self = this;
-          axios.post(  this.$apiAdress + '/api/login', {
-            email: self.email,
-            password: self.password,
-          }).then(function (response) {
-            self.email = '';
-            self.password = '';
-            localStorage.setItem("api_token", response.data.access_token);
-            localStorage.setItem('roles', response.data.roles);
-            self.$router.push({ path: 'dashboard' });
-          })
-          .catch(function (error) {
-            self.message = 'Incorrect E-mail or password';
-            self.showMessage = true;
-            console.log(error);
-          });
-  
-        }
-      }
+export default {
+  name: 'Login',
+  data() {
+    return {
+      email: '',
+      password: '',
+      showMessage: false,
+      message: '',
     }
+  },
+  methods: {
+    goRegister(){
+      this.$router.push({ path: 'register' });
+    },
+    login() {
+      let self = this;
+      axios.post(  this.$apiAdress + '/api/login', {
+        email: self.email,
+        password: self.password,
+      }).then(function (response) {
+        self.email = '';
+        self.password = '';
+        localStorage.setItem("api_token", response.data.access_token);
+        localStorage.setItem('roles', response.data.roles);
+        self.$router.push({ path: 'dashboard' });
+      })
+      .catch(function (error) {
+        self.message = 'Incorrect E-mail or password';
+        self.showMessage = true;
+        console.log(error);
+      });
+
+    }
+  },
+  mounted: function(){
+  }
+}
 
 </script>

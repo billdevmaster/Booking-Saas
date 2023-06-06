@@ -25,7 +25,7 @@
 /coreui/.DS_Store
 # /coreui/node_modules
 /coreui/dist
-/coreui/.env
+/coreui/src/constants.js
 /coreui/coverage
 
 /coreui/tests/e2e/reports/
