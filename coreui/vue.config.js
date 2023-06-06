@@ -4,7 +4,7 @@ module.exports = {
   configureWebpack: {
     //Necessary to run npm link https://webpack.js.org/configuration/resolve/#resolve-symlinks
     resolve: {
-       symlinks: false
+      symlinks: false
     }
   }
 }
