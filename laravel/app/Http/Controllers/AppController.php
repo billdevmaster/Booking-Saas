@@ -108,15 +108,16 @@ class AppController extends Controller
 
     // database migration
     sleep(1);
-
-    // exec("composer install", $output, $return1);
+    echo getcwd() . "\n";
+    exec("composer install", $output, $return1);
     
-    // if (!$return1) {
-    //   echo "composer install success";
-    // } else {
-    //   echo "composer install fail";
-    // }
+    if (!$return1) {
+      echo "composer install success";
+    } else {
+      echo "composer install fail";
+    }
     // sleep(5);
+    echo getcwd() . "\n";
     exec("php artisan key:generate", $output, $return2);
     var_dump($return2);
     if (!$return2) {
@@ -140,7 +141,7 @@ class AppController extends Controller
     // } else {
     //   echo "db seed fail";
     // }
-    return response()->json( ['status' => 'success'] );
+    // return response()->json( ['status' => 'success'] );
     // copy('PATTERN/index.php', $Username.'/index.php');
     // var_dump($request->input('app_data'));
   }
