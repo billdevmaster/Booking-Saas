@@ -109,21 +109,21 @@ class AppController extends Controller
     // database migration
     sleep(1);
 
-    exec("composer install", $output, $return);
-    var_dump($return);
-    if (!$return) {
+    exec("composer install", $output, $return1);
+    
+    if (!$return1) {
       echo "composer install success";
     } else {
       echo "composer install fail";
     }
     // sleep(5);
-
-    // exec("php artisan key:generate", $output, $return);
-    // if ($return) {
-    //   echo "generate key success";
-    // } else {
-    //   echo "generate key fail";
-    // }
+    exec("php artisan key:generate", $output, $return2);
+    var_dump($return2);
+    if (!$return2) {
+      echo "generate key success";
+    } else {
+      echo "generate key fail";
+    }
     // sleep(1);
 
     // exec("php artisan migrate", $output, $return);
