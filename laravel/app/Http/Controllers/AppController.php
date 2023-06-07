@@ -61,7 +61,7 @@ class AppController extends Controller
   ';
   private $new_app_base_url = "https://bookid.ee/";
   private $git_user = "https://github.com/billdevmaster/";
-  private $git_repo_name = "booking_demo";
+  private $git_repo_name = "my-history";
   
   /**
    * Create a new controller instance.
@@ -86,29 +86,31 @@ class AppController extends Controller
     for($i = 0; $i < count($env_text_arr); $i++) {
       $env_arr = explode("=", $env_text_arr[$i]);
       if (trim($env_arr[0]) == "APP_NAME") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . $request->input('app_data')['APP_NAME'];
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['APP_NAME'];
       } else if (trim($env_arr[0]) == "APP_URL") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . $this->new_app_base_url . $request->input('app_data')['folder_name'];
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $this->new_app_base_url . $request->input('app_data')['folder_name'];
       } else if (trim($env_arr[0]) == "DB_DATABASE") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . $request->input('app_data')['DB_DATABASE'];
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['DB_DATABASE'];
       } else if (trim($env_arr[0]) == "DB_USERNAME") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . $request->input('app_data')['DB_USERNAME'];
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['DB_USERNAME'];
       } else if (trim($env_arr[0]) == "DB_PASSWORD") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . $request->input('app_data')['DB_PASSWORD'];
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['DB_PASSWORD'];
       } else if (trim($env_arr[0]) == "MAIL_PASSWORD") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . env('MAIL_SMTP_PWD');
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('MAIL_SMTP_PWD');
       } else if (trim($env_arr[0]) == "MAIL_FROM_NAME") {
-        $env_text_arr[$i] = $env_arr[0] . '=' . $request->input('app_data')['APP_NAME'];
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['APP_NAME'];
+      } else {
+        $env_text_arr[$i] = trim($env_text_arr[$i]);
       }
     }
     $this->env_text = implode(PHP_EOL, $env_text_arr);
     fwrite($envfile, $this->env_text);
 
     // database migration
-    exec("composer install");
-    exec("php artisan migration");
-    exec("php artisan key:generate");
-    exec("php artisan db:seed");
+    // exec("composer install");
+    // exec("php artisan migration");
+    // exec("php artisan key:generate");
+    // exec("php artisan db:seed");
     return response()->json( ['status' => 'success'] );
     // copy('PATTERN/index.php', $Username.'/index.php');
     // var_dump($request->input('app_data'));
