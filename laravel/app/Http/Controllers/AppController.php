@@ -110,35 +110,36 @@ class AppController extends Controller
     sleep(1);
 
     exec("composer install", $output, $return);
-    if ($return) {
+    var_dump($return);
+    if (!$return) {
       echo "composer install success";
     } else {
       echo "composer install fail";
     }
-    sleep(5);
+    // sleep(5);
 
-    exec("php artisan key:generate", $output, $return);
-    if ($return) {
-      echo "generate key success";
-    } else {
-      echo "generate key fail";
-    }
-    sleep(1);
+    // exec("php artisan key:generate", $output, $return);
+    // if ($return) {
+    //   echo "generate key success";
+    // } else {
+    //   echo "generate key fail";
+    // }
+    // sleep(1);
 
-    exec("php artisan migrate", $output, $return);
-    if ($return) {
-      echo "db migrate success";
-    } else {
-      echo "db migrate fail";
-    }
-    sleep(2);
+    // exec("php artisan migrate", $output, $return);
+    // if ($return) {
+    //   echo "db migrate success";
+    // } else {
+    //   echo "db migrate fail";
+    // }
+    // sleep(2);
 
-    exec("php artisan db:seed", $output, $return);
-    if ($return) {
-      echo "db seed success";
-    } else {
-      echo "db seed fail";
-    }
+    // exec("php artisan db:seed", $output, $return);
+    // if ($return) {
+    //   echo "db seed success";
+    // } else {
+    //   echo "db seed fail";
+    // }
     return response()->json( ['status' => 'success'] );
     // copy('PATTERN/index.php', $Username.'/index.php');
     // var_dump($request->input('app_data'));
