@@ -139,11 +139,7 @@ class MenusTableSeeder extends Seeder
         $this->insertLink('guest', 'Login', '/login', 'cil-account-logout');
         $this->insertLink('guest', 'Register', '/register', 'cil-account-logout');
         $this->beginDropdown('admin', 'Settings', '/settings', 'cil-puzzle');
-            $this->insertLink('admin', 'Media',    '/media');
             $this->insertLink('admin', 'Users',    '/users');
-            $this->insertLink('admin', 'Menu',    '/menu');
-            $this->insertLink('admin', 'BREAD',    '/bread');
-            $this->insertLink('admin', 'Email',    '/email');
         $this->endDropdown();
 
         /* Create top menu */
@@ -151,17 +147,10 @@ class MenusTableSeeder extends Seeder
             'name' => 'top_menu'
         ]);
         $this->menuId = DB::getPdo()->lastInsertId();  //set menuId
-        $this->beginDropdown('guest,user,admin', 'Pages');
-            $this->insertLink('guest,user,admin', 'Dashboard',    '/');
-            $this->insertLink('user,admin', 'Notes',              '/notes');
-            $this->insertLink('admin', 'Users',                   '/users');
-        $this->endDropdown();
+        
         $this->beginDropdown('admin', 'Settings');
             $this->insertLink('admin', 'Edit menu',               '/menu');
             $this->insertLink('admin', 'Edit roles',              '/roles');
-            $this->insertLink('admin', 'Media',                   '/media');
-            $this->insertLink('admin', 'BREAD',                   '/bread');
-            $this->insertLink('admin', 'E-mail',                  '/email');
         $this->endDropdown();
 
         $this->joinAllByTransaction(); ///   <===== Must by use on end of this seeder
