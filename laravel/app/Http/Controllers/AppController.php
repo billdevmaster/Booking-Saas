@@ -108,8 +108,11 @@ class AppController extends Controller
 
     // database migration
     exec("composer install");
+    sleep(5);
     exec("php artisan key:generate");
+    sleep(1);
     exec("php artisan migrate");
+    sleep(1);
     exec("php artisan db:seed");
     return response()->json( ['status' => 'success'] );
     // copy('PATTERN/index.php', $Username.'/index.php');
