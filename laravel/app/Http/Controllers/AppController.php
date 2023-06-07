@@ -61,7 +61,7 @@ class AppController extends Controller
   ';
   private $new_app_base_url = "https://bookid.ee/";
   private $git_user = "https://github.com/billdevmaster/";
-  private $git_repo_name = "my-history";
+  private $git_repo_name = "booking_demo";
   
   /**
    * Create a new controller instance.
