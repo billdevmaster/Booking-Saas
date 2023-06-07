@@ -17,7 +17,7 @@ class AppController extends Controller
     LOG_LEVEL=debug
     
     DB_CONNECTION=mysql
-    DB_HOST=localhost
+    DB_HOST=127.0.0.1
     DB_PORT=3306
     DB_DATABASE=
     DB_USERNAME=
