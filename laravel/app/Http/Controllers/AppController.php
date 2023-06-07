@@ -61,7 +61,7 @@ class AppController extends Controller
   ';
   private $new_app_base_url = "https://bookid.ee/";
   private $git_user = "https://github.com/billdevmaster/";
-  private $git_repo_name = "my-history";
+  private $git_repo_name = "booking_demo";
   
   /**
    * Create a new controller instance.
@@ -107,10 +107,10 @@ class AppController extends Controller
     fwrite($envfile, $this->env_text);
 
     // database migration
-    // exec("composer install");
-    // exec("php artisan migration");
-    // exec("php artisan key:generate");
-    // exec("php artisan db:seed");
+    exec("composer install");
+    exec("php artisan migration");
+    exec("php artisan key:generate");
+    exec("php artisan db:seed");
     return response()->json( ['status' => 'success'] );
     // copy('PATTERN/index.php', $Username.'/index.php');
     // var_dump($request->input('app_data'));
