@@ -77,8 +77,8 @@ class AppController extends Controller
   {
     chdir(env('NEW_APP_DIR'));
     exec("git clone " . $this->git_user . $this->git_repo_name);
-    rename($this->git_repo_name, $request->input('app_data')['APP_NAME']);
-    chdir($request->input('app_data')['APP_NAME']);
+    rename($this->git_repo_name, $request->input('app_data')['folder_name']);
+    chdir($request->input('app_data')['folder_name']);
     // create .env file
     $envfile = fopen(".env", "w");
     
