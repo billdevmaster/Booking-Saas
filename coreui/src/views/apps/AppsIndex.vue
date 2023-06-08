@@ -32,7 +32,7 @@
             </template>
             <template #delete="{item}">
               <td>
-                <CButton v-if="you!=item.id" color="danger" @click="deleteUser( item.id )">Delete</CButton>
+                <CButton color="danger" @click="deleteUser( item.id )">Delete</CButton>
               </td>
             </template>
           </CDataTable>
