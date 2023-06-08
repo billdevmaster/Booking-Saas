@@ -113,13 +113,14 @@ class AppController extends Controller
     // composer install
     exec("composer install");
     // database migrate
-    $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']);
+    $filename = "demo.sql";
+    $lines = file($filename);
+    $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD'], $lines);
 
     return response()->json( ['status' => 'success'] );
   }
 
-  private function migrate_database($database, $database_user, $database_pwd) {
-    $filename = 'demo.sql';
+  private function migrate_database($database, $database_user, $database_pwd, $lines) {
     // MySQL host
     $mysql_host = 'localhost';
     // MySQL username
@@ -136,8 +137,6 @@ class AppController extends Controller
 
     // Temporary variable, used to store current query
     $templine = '';
-    // Read in entire file
-    $lines = file($filename);
     // Loop through each line
     foreach ($lines as $line)
     {
