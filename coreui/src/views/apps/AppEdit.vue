@@ -29,7 +29,7 @@
 <script>
 import axios from 'axios';
 export default {
-  name: 'AppCreate',
+  name: 'AppEdit',
   data: () => {
     return {
       appData: {
