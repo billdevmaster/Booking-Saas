@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Apps;
 
 class AppController extends Controller
 {
@@ -77,58 +78,42 @@ class AppController extends Controller
   {
     $filename = "demo.sql";
     $lines = file($filename);
-    chdir(env('NEW_APP_DIR'));
 
-    // check if there is already dir.
-    if (is_dir($request->input('app_data')['folder_name'])){
+    // check valid inputs
+    $ret = $this->check_validation($request->input('app_data'));
+    if (!$ret) {
       return response()->json([
         'status' => 'error',
-        'message' => 'the url is already registered'
+        'message' => 'the url or name is already registered'
       ], 503);
     }
-
-    exec("git clone " . $this->git_user . $this->git_repo_name);
-    rename($this->git_repo_name, $request->input('app_data')['folder_name']);
-    chdir($request->input('app_data')['folder_name']);
-
-    // create .env file
-    $envfile = fopen(".env", "w");
     
-    $env_text_arr = explode(PHP_EOL, $this->env_text);
-    for($i = 0; $i < count($env_text_arr); $i++) {
-      $env_arr = explode("=", $env_text_arr[$i]);
-      if (trim($env_arr[0]) == "APP_NAME") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['APP_NAME'];
-      } else if (trim($env_arr[0]) == "APP_URL") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $this->new_app_base_url . $request->input('app_data')['folder_name'];
-      } else if (trim($env_arr[0]) == "DB_DATABASE") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['DB_DATABASE'];
-      } else if (trim($env_arr[0]) == "DB_USERNAME") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['DB_USERNAME'];
-      } else if (trim($env_arr[0]) == "DB_PASSWORD") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['DB_PASSWORD'];
-      } else if (trim($env_arr[0]) == "MAIL_PASSWORD") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('MAIL_SMTP_PWD');
-      } else if (trim($env_arr[0]) == "MAIL_FROM_NAME") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['APP_NAME'];
-      } else if (trim($env_arr[0]) == "APP_KEY") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('NEW_APP_KEY');
-      } else {
-        $env_text_arr[$i] = trim($env_text_arr[$i]);
-      }
+    // install project
+    $ret = $this->install_project($request->input('app_data'));
+    if (!$ret) {
+      return response()->json([
+        'status' => 'error',
+        'message' => 'folder name is already exist'
+      ], 503);
     }
-    $this->env_text = implode(PHP_EOL, $env_text_arr);
-    fwrite($envfile, $this->env_text);
-
-    // composer install
-    exec("composer install");
 
     // database migrate
     $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD'], $lines);
 
     // save apps
+    $this->save_app($request->input('app_data'));
 
     return response()->json( ['status' => 'success'] );
+  }
+
+  private function check_validation($app_data) {
+    // check if name is exist
+    $app = Apps::where("name", $app_data['APP_NAME'])->orwhere("url", $this->new_app_base_url . $app_data['folder_name'])->first();
+    if ($app != null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   private function migrate_database($database, $database_user, $database_pwd, $lines) {
@@ -166,5 +151,59 @@ class AppController extends Controller
           $templine = '';
       }
     }
+  }
+
+  private function install_project($app_data) {
+    chdir(env('NEW_APP_DIR'));
+    // check if there is already dir.
+    if (is_dir($app_data['folder_name'])){
+      return false;
+    }
+    exec("git clone " . $this->git_user . $this->git_repo_name);
+    rename($this->git_repo_name, $app_data['folder_name']);
+    chdir($app_data['folder_name']);
+
+    // create .env file
+    $envfile = fopen(".env", "w");
+    
+    $env_text_arr = explode(PHP_EOL, $this->env_text);
+    for($i = 0; $i < count($env_text_arr); $i++) {
+      $env_arr = explode("=", $env_text_arr[$i]);
+      if (trim($env_arr[0]) == "APP_NAME") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $app_data['APP_NAME'];
+      } else if (trim($env_arr[0]) == "APP_URL") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $this->new_app_base_url . $app_data['folder_name'];
+      } else if (trim($env_arr[0]) == "DB_DATABASE") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $app_data['DB_DATABASE'];
+      } else if (trim($env_arr[0]) == "DB_USERNAME") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $app_data['DB_USERNAME'];
+      } else if (trim($env_arr[0]) == "DB_PASSWORD") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $app_data['DB_PASSWORD'];
+      } else if (trim($env_arr[0]) == "MAIL_PASSWORD") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('MAIL_SMTP_PWD');
+      } else if (trim($env_arr[0]) == "MAIL_FROM_NAME") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $app_data['APP_NAME'];
+      } else if (trim($env_arr[0]) == "APP_KEY") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('NEW_APP_KEY');
+      } else {
+        $env_text_arr[$i] = trim($env_text_arr[$i]);
+      }
+    }
+    $this->env_text = implode(PHP_EOL, $env_text_arr);
+    fwrite($envfile, $this->env_text);
+
+    // composer install
+    exec("composer install");
+    return true;
+  }
+
+  private function save_app($app_data) {
+    $app = new Apps();
+    $app->name = $app_data['APP_NAME'];
+    $app->url = $this->new_app_base_url . $app_data['folder_name'];
+    $app->DB_DATABASE = $app_data['DB_DATABASE'];
+    $app->DB_USERNAME = $app_data['DB_USERNAME'];
+    $app->DB_PASSWORD = $app_data['DB_PASSWORD'];
+    $app->save();
   }
 }
