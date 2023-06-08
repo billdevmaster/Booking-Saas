@@ -5,6 +5,13 @@
         <h3>
           Create Apps
         </h3>
+        <CAlert
+            :show.sync="dismissCountDown"
+            :color.sync="alertType"
+            fade
+          >
+          ({{dismissCountDown}}) {{ message }}
+        </CAlert>
         <CInput label="App Name" type="text" placeholder="Title" v-model="appData.APP_NAME"></CInput>
         <CInput label="Folder Name" type="text" placeholder="foler name" v-model="appData.folder_name"></CInput>
         <CInput label="Database" type="text" placeholder="Database" v-model="appData.DB_DATABASE"></CInput>
@@ -17,6 +24,7 @@
       </CCardBody>
     </CCard>
   </CCol>
+  
 </template>
 <script>
 import axios from 'axios';
@@ -31,6 +39,11 @@ export default {
         DB_USERNAME: "",
         DB_PASSWORD: ""
       },
+      message: '',
+      alertType: 'primary',
+      dismissSecs: 7,
+      dismissCountDown: 0,
+      showDismissibleAlert: false
     }
   },
   methods: {
@@ -40,17 +53,28 @@ export default {
     },
     create() {
       let self = this;
-      console.log(self.appData.APP_NAME)
       axios.post(this.$apiAdress + '/api/apps/create?token=' + localStorage.getItem("api_token"),
         { 'app_data': self.appData }
       )
       .then(function (response) { 
-        console.log(response)
+          self.alertType = 'primary';
+        self.message = 'Successfully created note.';
+        self.showAlert();
       })
-      .catch(function (error) { 
-        console.log(error)
+      .catch(function (error) {
+        if (error.response.status === 503) {
+          self.alertType = 'danger';
+          self.message = error.response.data.message;
+          self.showAlert();          
+        }
       })
-    }
+    },
+    countDownChanged (dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert () {
+      this.dismissCountDown = this.dismissSecs
+    },
   }
 }
 </script>

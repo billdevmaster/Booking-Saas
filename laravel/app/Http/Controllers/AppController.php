@@ -78,6 +78,15 @@ class AppController extends Controller
     $filename = "demo.sql";
     $lines = file($filename);
     chdir(env('NEW_APP_DIR'));
+
+    // check if there is already dir.
+    if (is_dir($request->input('app_data')['folder_name'])){
+      return response()->json([
+        'status' => 'error',
+        'message' => 'the url is already registered'
+      ], 503);
+    }
+
     exec("git clone " . $this->git_user . $this->git_repo_name);
     rename($this->git_repo_name, $request->input('app_data')['folder_name']);
     chdir($request->input('app_data')['folder_name']);
@@ -113,8 +122,11 @@ class AppController extends Controller
 
     // composer install
     exec("composer install");
+
     // database migrate
     $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD'], $lines);
+
+    // save apps
 
     return response()->json( ['status' => 'success'] );
   }
