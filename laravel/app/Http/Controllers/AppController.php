@@ -113,7 +113,7 @@ class AppController extends Controller
     // composer install
     exec("composer install");
     // database migrate
-    migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']);
+    $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']);
 
     return response()->json( ['status' => 'success'] );
   }
