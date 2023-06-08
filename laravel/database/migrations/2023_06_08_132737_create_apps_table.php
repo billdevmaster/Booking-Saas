@@ -15,12 +15,14 @@ class CreateAppsTable extends Migration
     {
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('APP_NAME')->unique();
+            $table->string('folder_name')->unique();
             $table->string('url')->unique();
             $table->string('DB_USERNAME');
             $table->string('DB_DATABASE');
             $table->string('DB_PASSWORD');
             $table->integer('users_id')->unsigned()->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Apps;
+use DataTables;
 
 class AppController extends Controller
 {
@@ -101,7 +102,7 @@ class AppController extends Controller
     $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD'], $lines);
 
     // save apps
-    $this->save_app($request->input('app_data'));
+    $this->save_app($request->input('app_data'), 0);
 
     return response()->json( ['status' => 'success'] );
   }
@@ -197,13 +198,75 @@ class AppController extends Controller
     return true;
   }
 
-  private function save_app($app_data) {
-    $app = new Apps();
-    $app->name = $app_data['APP_NAME'];
+  private function update_project($old_app_data, $new_app_data) {
+    chdir(env('NEW_APP_DIR'));
+    if ($old_app_data->folder_name != $new_app_data['folder_name']) {
+      rename($old_app_data->folder_name, $new_app_data['folder_name']);
+    }
+    chdir($new_app_data['folder_name']);
+    $this->env_text = file_get_contents('.env', true);
+    $envfile = fopen(".env", "w");
+    
+    $env_text_arr = explode(PHP_EOL, $this->env_text);
+    for($i = 0; $i < count($env_text_arr); $i++) {
+      $env_arr = explode("=", $env_text_arr[$i]);
+      if (trim($env_arr[0]) == "APP_NAME") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $new_app_data['APP_NAME'];
+      } else if (trim($env_arr[0]) == "APP_URL") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $this->new_app_base_url . $new_app_data['folder_name'];
+      } else if (trim($env_arr[0]) == "DB_DATABASE") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $new_app_data['DB_DATABASE'];
+      } else if (trim($env_arr[0]) == "DB_USERNAME") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $new_app_data['DB_USERNAME'];
+      } else if (trim($env_arr[0]) == "DB_PASSWORD") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $new_app_data['DB_PASSWORD'];
+      } else if (trim($env_arr[0]) == "MAIL_FROM_NAME") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . $new_app_data['APP_NAME'];
+      } else {
+        $env_text_arr[$i] = trim($env_text_arr[$i]);
+      }
+    }
+    $this->env_text = implode(PHP_EOL, $env_text_arr);
+    fwrite($envfile, $this->env_text);
+  }
+
+  private function save_app($app_data, $id) {
+    $app = Apps::find($id);
+    if ($app == null) {
+      $app = new Apps();
+    }
+    $app->APP_NAME = $app_data['APP_NAME'];
+    $app->folder_name = $app_data['folder_name'];
     $app->url = $this->new_app_base_url . $app_data['folder_name'];
     $app->DB_DATABASE = $app_data['DB_DATABASE'];
     $app->DB_USERNAME = $app_data['DB_USERNAME'];
     $app->DB_PASSWORD = $app_data['DB_PASSWORD'];
     $app->save();
+  }
+
+  public function get_apps(Request $request) {
+    $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
+        ->whereNull('deleted_at')
+        ->get();
+        return response()->json( compact('apps') );
+  }
+
+  public function get_app(Request $request) {
+    $app = Apps::find($request->input('id'));
+    return response()->json( compact('app') );
+  }
+
+  public function update(Request $request) {
+    $filename = "demo.sql";
+    $lines = file($filename);
+
+    $app = Apps::find($request->input('id'));
+    $this->check_validation($request->input('app_data'));
+    $this->update_project($app, $request->input('app_data'));
+    if ($app->DB_DATABASE != $request->input('app_data')['DB_DATABASE']) {
+      $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']);
+    }
+    $this->save_app($request->input('app_data'), $request->input('id'));
+    return response()->json( ['status' => 'success'] );
   }
 }

@@ -39,7 +39,7 @@ const DeleteMenuElement = () => import('@/views/menuElements/DeleteMenuElement')
 // Apps
 const Apps = () => import('@/views/apps/AppsIndex')
 const AppCreate = () => import('@/views/apps/AppCreate')
-
+const AppEdit = () => import('@/views/apps/AppEdit')
 
 Vue.use(Router)
 
@@ -291,6 +291,15 @@ function configRoutes () {
               meta: { label: 'Create App' },
               component: AppCreate,
               name: 'Create App',
+              meta:{
+                requiresUser: true
+              }
+            },
+            {
+              path: ':id/edit',
+              meta: { label: 'Edit App' },
+              name: 'EditApp',
+              component: AppEdit,
               meta:{
                 requiresUser: true
               }
