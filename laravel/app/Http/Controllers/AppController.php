@@ -102,7 +102,7 @@ class AppController extends Controller
       } else if (trim($env_arr[0]) == "MAIL_FROM_NAME") {
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['APP_NAME'];
       } else if (trim($env_arr[0]) == "APP_KEY") {
-        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('APP_KEY');
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('NEW_APP_KEY');
       } else {
         $env_text_arr[$i] = trim($env_text_arr[$i]);
       }
