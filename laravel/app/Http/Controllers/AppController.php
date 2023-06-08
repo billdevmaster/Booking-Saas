@@ -75,10 +75,12 @@ class AppController extends Controller
 
   public function create(Request $request)
   {
+    
     chdir(env('NEW_APP_DIR'));
     exec("git clone " . $this->git_user . $this->git_repo_name);
     rename($this->git_repo_name, $request->input('app_data')['folder_name']);
     chdir($request->input('app_data')['folder_name']);
+
     // create .env file
     $envfile = fopen(".env", "w");
     
@@ -99,6 +101,8 @@ class AppController extends Controller
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('MAIL_SMTP_PWD');
       } else if (trim($env_arr[0]) == "MAIL_FROM_NAME") {
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . $request->input('app_data')['APP_NAME'];
+      } else if (trim($env_arr[0]) == "APP_KEY") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('APP_KEY');
       } else {
         $env_text_arr[$i] = trim($env_text_arr[$i]);
       }
@@ -106,43 +110,51 @@ class AppController extends Controller
     $this->env_text = implode(PHP_EOL, $env_text_arr);
     fwrite($envfile, $this->env_text);
 
-    // database migration
-    sleep(1);
-    echo getcwd() . "\n";
-    exec("composer install", $output, $return1);
-    
-    if (!$return1) {
-      echo "composer install success";
-    } else {
-      echo "composer install fail";
-    }
-    // sleep(5);
-    echo getcwd() . "\n";
-    exec("php artisan key:generate", $output, $return2);
-    var_dump($return2);
-    if (!$return2) {
-      echo "generate key success";
-    } else {
-      echo "generate key fail";
-    }
-    // sleep(1);
+    // composer install
+    exec("composer install");
+    // database migrate
+    migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']);
 
-    // exec("php artisan migrate", $output, $return);
-    // if ($return) {
-    //   echo "db migrate success";
-    // } else {
-    //   echo "db migrate fail";
-    // }
-    // sleep(2);
+    return response()->json( ['status' => 'success'] );
+  }
 
-    // exec("php artisan db:seed", $output, $return);
-    // if ($return) {
-    //   echo "db seed success";
-    // } else {
-    //   echo "db seed fail";
-    // }
-    // return response()->json( ['status' => 'success'] );
-    // copy('PATTERN/index.php', $Username.'/index.php');
-    // var_dump($request->input('app_data'));
+  private function migrate_database($database, $database_user, $database_pwd) {
+    $filename = 'demo.sql';
+    // MySQL host
+    $mysql_host = 'localhost';
+    // MySQL username
+    $mysql_username = $database_user;
+    // MySQL password
+    $mysql_password = $database_pwd;
+    // Database name
+    $mysql_database = $database;
+
+    // Connect to MySQL server
+    $con = mysqli_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error());
+    // Select database
+    mysqli_select_db($con, $mysql_database) or die('Error selecting MySQL database: ' . mysql_error());
+
+    // Temporary variable, used to store current query
+    $templine = '';
+    // Read in entire file
+    $lines = file($filename);
+    // Loop through each line
+    foreach ($lines as $line)
+    {
+      // Skip it if it's a comment
+      if (substr($line, 0, 2) == '--' || $line == '')
+          continue;
+
+      // Add this line to the current segment
+      $templine .= $line;
+      // If it has a semicolon at the end, it's the end of the query
+      if (substr(trim($line), -1, 1) == ';')
+      {
+          // Perform the query
+          mysqli_query($con, $templine) or print('Error performing query \'<strong>' . $templine . '\': ' . mysql_error() . '<br /><br />');
+          // Reset temp variable to empty
+          $templine = '';
+      }
+    }
   }
 }
