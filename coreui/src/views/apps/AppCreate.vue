@@ -57,8 +57,8 @@ export default {
         { 'app_data': self.appData }
       )
       .then(function (response) { 
-          self.alertType = 'primary';
-        self.message = 'Successfully created note.';
+        self.alertType = 'primary';
+        self.message = 'Successfully created note. Please visit https://bookid.ee/' + self.appData.folder_name;
         self.showAlert();
       })
       .catch(function (error) {
