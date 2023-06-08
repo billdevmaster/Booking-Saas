@@ -109,7 +109,7 @@ class AppController extends Controller
 
   private function check_validation($app_data) {
     // check if name is exist
-    $app = Apps::where("name", $app_data['APP_NAME'])->orwhere("url", $this->new_app_base_url . $app_data['folder_name'])->first();
+    $app = Apps::where("APP_NAME", $app_data['APP_NAME'])->orwhere("url", $this->new_app_base_url . $app_data['folder_name'])->first();
     if ($app != null) {
       return false;
     } else {
