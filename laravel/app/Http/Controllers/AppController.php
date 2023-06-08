@@ -264,7 +264,7 @@ class AppController extends Controller
     $this->check_validation($request->input('app_data'));
     $this->update_project($app, $request->input('app_data'));
     if ($app->DB_DATABASE != $request->input('app_data')['DB_DATABASE']) {
-      $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']);
+      $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD'], $lines);
     }
     $this->save_app($request->input('app_data'), $request->input('id'));
     return response()->json( ['status' => 'success'] );
