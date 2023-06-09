@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Apps;
 use DataTables;
+use Stripe\Stripe;
+use Stripe\Charge;
 
 class AppController extends Controller
 {
@@ -241,6 +244,9 @@ class AppController extends Controller
     $app->DB_DATABASE = $app_data['DB_DATABASE'];
     $app->DB_USERNAME = $app_data['DB_USERNAME'];
     $app->DB_PASSWORD = $app_data['DB_PASSWORD'];
+    if ($app_data['user_id']) {
+      $app->user_id = $app_data['user_id'];
+    }
     $app->save();
   }
 
@@ -268,5 +274,46 @@ class AppController extends Controller
     }
     $this->save_app($request->input('app_data'), $request->input('id'));
     return response()->json( ['status' => 'success'] );
+  }
+
+  public function get_clients(Request $request) {
+    $users = DB::table('users')
+    ->select('users.id', 'users.email')
+    ->where('menuroles', 'user')
+    ->whereNull('deleted_at')
+    ->get();
+    return response()->json( compact('users') );
+  }
+
+  public function processPayment(Request $request)
+  {
+    $stripeSecretKey = env('STRIPE_SECRET');
+    Stripe::setApiKey($stripeSecretKey);
+
+    $token = $request->input('token');
+
+    try {
+      $charge = Charge::create([
+          'amount' => 1000, // Replace with your desired amount in cents
+          'currency' => 'usd',
+          'description' => 'Example Charge',
+          'source' => $token,
+      ]);
+
+      // Handle the successful payment
+      // You can store the payment details in your database or perform any other actions here
+
+      return response()->json([
+          'success' => true,
+          'message' => 'Payment processed successfully.',
+      ]);
+    } catch (\Exception $e) {
+      // Handle the payment error
+      return response()->json([
+          'success' => false,
+          'message' => 'Payment failed. Please try again.',
+          'error' => $e->getMessage(),
+      ]);
+    }
   }
 }

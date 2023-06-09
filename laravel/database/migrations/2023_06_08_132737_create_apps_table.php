@@ -21,7 +21,7 @@ class CreateAppsTable extends Migration
             $table->string('DB_USERNAME');
             $table->string('DB_DATABASE');
             $table->string('DB_PASSWORD');
-            $table->integer('users_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

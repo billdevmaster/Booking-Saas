@@ -7,6 +7,7 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>Booking SaaS</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-118965717-3"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}

@@ -40,6 +40,12 @@ const DeleteMenuElement = () => import('@/views/menuElements/DeleteMenuElement')
 const Apps = () => import('@/views/apps/AppsIndex')
 const AppCreate = () => import('@/views/apps/AppCreate')
 const AppEdit = () => import('@/views/apps/AppEdit')
+const AppSubscribe = () => import('@/views/apps/AppSubscribe')
+
+// Plans
+const Plans = () => import('@/views/plans/PlansIndex')
+const PlanCreate = () => import('@/views/plans/PlanCreate')
+const PlanEdit = () => import('@/views/plans/PlanEdit')
 
 Vue.use(Router)
 
@@ -95,21 +101,21 @@ function configRoutes () {
           path: 'dashboard',
           name: 'Dashboard',
           component: Dashboard,
-          meta:{
+          meta: {
             requiresUser: true
           }
         },
         {
           path: 'menu',
-          meta: { label: 'Menu'},
+          meta: { label: 'Menu' },
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
               path: '',
               component: Menus,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -118,7 +124,7 @@ function configRoutes () {
               meta: { label: 'Create Menu' },
               name: 'CreateMenu',
               component: CreateMenu,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -127,7 +133,7 @@ function configRoutes () {
               meta: { label: 'Edit Menu' },
               name: 'EditMenu',
               component: EditMenu,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -136,7 +142,7 @@ function configRoutes () {
               meta: { label: 'Delete Menu' },
               name: 'DeleteMenu',
               component: DeleteMenu,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -144,15 +150,15 @@ function configRoutes () {
         },
         {
           path: 'menuelement',
-          meta: { label: 'MenuElement'},
+          meta: { label: 'MenuElement' },
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
               path: ':menu/menuelement',
               component: MenuElements,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -161,16 +167,16 @@ function configRoutes () {
               meta: { label: 'Create Menu Element' },
               name: 'Create Menu Element',
               component: CreateMenuElement,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
             {
               path: ':menu/menuelement/:id',
-              meta: { label: 'Menu Element Details'},
+              meta: { label: 'Menu Element Details' },
               name: 'Menu Element',
               component: ShowMenuElement,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -179,7 +185,7 @@ function configRoutes () {
               meta: { label: 'Edit Menu Element' },
               name: 'Edit Menu Element',
               component: EditMenuElement,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -188,7 +194,7 @@ function configRoutes () {
               meta: { label: 'Delete Menu Element' },
               name: 'Delete Menu Element',
               component: DeleteMenuElement,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -196,24 +202,24 @@ function configRoutes () {
         },
         {
           path: 'users',
-          meta: { label: 'Users'},
+          meta: { label: 'Users' },
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
               path: '',
               component: Users,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
             {
               path: ':id',
-              meta: { label: 'User Details'},
+              meta: { label: 'User Details' },
               name: 'User',
               component: User,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -222,7 +228,7 @@ function configRoutes () {
               meta: { label: 'Edit User' },
               name: 'Edit User',
               component: EditUser,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -230,15 +236,15 @@ function configRoutes () {
         },
         {
           path: 'roles',
-          meta: { label: 'Roles'},
+          meta: { label: 'Roles' },
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
               path: '',
               component: Roles,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -247,16 +253,16 @@ function configRoutes () {
               meta: { label: 'Create Role' },
               name: 'Create Role',
               component: CreateRole,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
             {
               path: ':id',
-              meta: { label: 'Role Details'},
+              meta: { label: 'Role Details' },
               name: 'Role',
               component: Role,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -265,7 +271,7 @@ function configRoutes () {
               meta: { label: 'Edit Role' },
               name: 'Edit Role',
               component: EditRole,
-              meta:{
+              meta: {
                 requiresAdmin: true
               }
             },
@@ -276,13 +282,13 @@ function configRoutes () {
           name: 'Apps',
           redirect: '/apps',
           component: {
-            render (c) { return c('router-view') }
+            render(c) { return c('router-view') }
           },
           children: [
             {
               path: '',
               component: Apps,
-              meta:{
+              meta: {
                 requiresUser: true
               }
             },
@@ -291,7 +297,7 @@ function configRoutes () {
               meta: { label: 'Create App' },
               component: AppCreate,
               name: 'Create App',
-              meta:{
+              meta: {
                 requiresUser: true
               }
             },
@@ -300,12 +306,55 @@ function configRoutes () {
               meta: { label: 'Edit App' },
               name: 'EditApp',
               component: AppEdit,
-              meta:{
+              meta: {
+                requiresUser: true
+              }
+            },
+            {
+              path: ':id/subscribe',
+              meta: { label: 'Subscribe App' },
+              name: 'SubscibeApp',
+              component: AppSubscribe,
+              meta: {
                 requiresUser: true
               }
             },
           ]
         },
+        
+        {
+          path: '/plans',
+          name: 'Plans',
+          redirect: '/plans',
+          component: {
+            render(c) { return c('router-view') }
+          },
+          children: [
+            {
+              path: '',
+              component: Plans,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+            {
+              path: 'create',
+              component: PlanCreate,
+              meta: {
+                requiresAdmin: true
+              }
+            },
+            {
+              path: ':id/edit',
+              meta: { label: 'Edit Plan' },
+              name: 'EditPlan',
+              component: PlanEdit,
+              meta: {
+                requiresUser: true
+              }
+            },
+          ]
+        }
       ]
     },
     {

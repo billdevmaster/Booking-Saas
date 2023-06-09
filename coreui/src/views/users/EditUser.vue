@@ -16,6 +16,8 @@
             </CAlert>
             <CInput type="text" label="Name" placeholder="Name" v-model="name"></CInput>
             <CInput type="text" label="Email" placeholder="Email" v-model="email"></CInput>
+            <CInput type="text" label="Roles" placeholder="Roles" v-model="roles"></CInput>
+
             <CButton color="primary" @click="update()">Save</CButton>
             <CButton color="primary" @click="goBack">Back</CButton>
           </CForm>
@@ -39,6 +41,8 @@ export default {
     return {
         name: '',
         email: '',
+        roles: '',
+        status: true,
         showMessage: false,
         message: '',
         dismissSecs: 7,
@@ -52,12 +56,13 @@ export default {
       // this.$router.replace({path: '/users'})
     },
     update() {
-        let self = this;
+      let self = this;
         axios.post(  this.$apiAdress + '/api/users/' + self.$route.params.id + '?token=' + localStorage.getItem("api_token"),
         {
             _method: 'PUT',
             name: self.name,
             email: self.email,
+            roles: self.roles,
         })
         .then(function (response) {
             self.message = 'Successfully updated user.';
@@ -80,6 +85,7 @@ export default {
     .then(function (response) {
         self.name = response.data.name;
         self.email = response.data.email;
+        self.roles = response.data.roles;
     }).catch(function (error) {
         console.log(error);
         self.$router.push({ path: '/login' });

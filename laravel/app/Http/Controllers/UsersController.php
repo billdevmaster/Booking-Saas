@@ -28,7 +28,7 @@ class UsersController extends Controller
     {
         $you = auth()->user()->id;
         $users = DB::table('users')
-        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered')
+        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.created_at as registered')
         ->whereNull('deleted_at')
         ->get();
         return response()->json( compact('users', 'you') );
@@ -43,7 +43,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = DB::table('users')
-        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.email_verified_at as registered')
+        ->select('users.id', 'users.name', 'users.email', 'users.menuroles as roles', 'users.status', 'users.created_at as registered')
         ->where('users.id', '=', $id)
         ->first();
         return response()->json( $user );
@@ -80,6 +80,7 @@ class UsersController extends Controller
         $user = User::find($id);
         $user->name       = $request->input('name');
         $user->email      = $request->input('email');
+        $user->menuroles      = $request->input('roles');
         $user->save();
         //$request->session()->flash('message', 'Successfully updated user');
         return response()->json( ['status' => 'success'] );

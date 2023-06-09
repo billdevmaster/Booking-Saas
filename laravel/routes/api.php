@@ -34,8 +34,8 @@ Route::group(['middleware' => 'api'], function ($router) {
 
         Route::resource('bread',  'BreadController');   //create BREAD (resource)
 
-        Route::resource('users', 'UsersController')->except( ['create', 'store'] );
-
+        Route::resource('users', 'UsersController')->except( ['create', 'store', 'get_clients'] );
+        
         Route::prefix('menu/menu')->group(function () { 
             Route::get('/',         'MenuEditController@index')->name('menu.menu.index');
             Route::get('/create',   'MenuEditController@create')->name('menu.menu.create');
@@ -73,6 +73,12 @@ Route::group(['middleware' => 'api'], function ($router) {
             Route::get('/file/copy',        'MediaController@fileCopy')->name('media.file.copy');
 
             Route::get('/file/download',    'MediaController@fileDownload');
+
+        });
+        Route::prefix('plans')->group(function () { 
+            Route::get('/get_plans',     'PlansController@get_plans');
+            Route::post('/create',       'PlansController@create');
+            Route::get('/get_plan',     'PlansController@get_plan');
         });
 
         Route::resource('roles',        'RolesController');
@@ -81,9 +87,10 @@ Route::group(['middleware' => 'api'], function ($router) {
 
         Route::prefix('apps')->group(function ($router) {
             Route::get('/',    'AppController@get_apps');
-            Route::post('/create',    'AppController@create');
-            Route::get('/get_app',    'AppController@get_app');
-            Route::post('/update',    'AppController@update');
+            Route::post('/create',      'AppController@create');
+            Route::get('/get_app',      'AppController@get_app');
+            Route::post('/update',      'AppController@update');
+            Route::get('/get_clients',  'AppController@get_clients');
         });
     });
 });

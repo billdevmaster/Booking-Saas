@@ -17,6 +17,13 @@
         <CInput label="Database" type="text" placeholder="Database" v-model="appData.DB_DATABASE"></CInput>
         <CInput label="Username" type="text" placeholder="Batabase username" v-model="appData.DB_USERNAME"></CInput>
         <CInput label="Password" type="text" placeholder="Database password" v-model="appData.DB_PASSWORD"></CInput>
+        <CSelect
+          label="User"
+          vertical
+          :options="users"
+          placeholder="Please select"
+          :value.sync="appData.user_id"
+        />
 
         <CButton color="primary" @click="create()">Create</CButton>
         <CButton color="primary" @click="goBack">Back</CButton>
@@ -37,13 +44,15 @@ export default {
         folder_name: "",
         DB_DATABASE: "",
         DB_USERNAME: "",
-        DB_PASSWORD: ""
+        DB_PASSWORD: "",
+        user_id: null
       },
       message: '',
       alertType: 'primary',
       dismissSecs: 7,
       dismissCountDown: 0,
-      showDismissibleAlert: false
+      showDismissibleAlert: false,
+      users: [],
     }
   },
   methods: {
@@ -75,6 +84,27 @@ export default {
     showAlert () {
       this.dismissCountDown = this.dismissSecs
     },
+    getUsers() {
+      let self = this;
+      axios.get(this.$apiAdress + '/api/apps/get_clients?token=' + localStorage.getItem("api_token"))
+      .then(function (response) { 
+        let tmpVal = [];
+        for (let i = 0; i < response.data.users.length; i++) {
+          tmpVal.push({ label: response.data.users[i].email, value: response.data.users[i].id });
+        }
+        self.users = tmpVal;
+      })
+      .catch(function (error) {
+        if (error.response.status === 503) {
+          self.alertType = 'danger';
+          self.message = error.response.data.message;
+          self.showAlert();          
+        }
+      })
+    }
+  },
+  mounted: function () {
+    this.getUsers();
   }
 }
 </script>

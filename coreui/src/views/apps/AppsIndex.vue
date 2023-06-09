@@ -30,6 +30,11 @@
                 <CButton color="primary" @click="editApp( item.id )">Edit</CButton>
               </td>
             </template>
+            <template #subscribe="{item}">
+              <td>
+                <CButton color="primary" @click="subscribeApp( item.id )">Edit</CButton>
+              </td>
+            </template>
             <template #delete="{item}">
               <td>
                 <CButton color="danger" @click="deleteUser( item.id )">Delete</CButton>
@@ -51,7 +56,7 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit', 'delete'],
+      fields: ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit', 'subscribe', 'delete'],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,
@@ -73,6 +78,9 @@ export default {
     editApp ( id ) {
       const editLink = this.editLink( id );
       this.$router.push({path: editLink});
+    },
+    subscribeApp ( id ) {
+      this.$router.push({path: `apps/${id.toString()}/subscribe`});
     },
     getApps() {
       let self = this;
