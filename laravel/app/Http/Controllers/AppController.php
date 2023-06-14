@@ -67,9 +67,9 @@ class AppController extends Controller
     
     MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
-    SASS_APP_DATABASE=
-    SASS_APP_DATABASE_USER=
-    SASS_APP_DATABASE_PASSWORD=
+    SAAS_APP_DATABASE=
+    SAAS_APP_DATABASE_USER=
+    SAAS_APP_DATABASE_PASSWORD=
   ';
   private $new_app_base_url = "https://bookid.ee/";
   private $git_user = "https://github.com/billdevmaster/";
