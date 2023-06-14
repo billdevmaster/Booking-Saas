@@ -185,7 +185,7 @@ class AppController extends Controller
   private function install_project($app_data) {
     chdir(env('NEW_APP_DIR'));
     // check if there is already dir.
-    if (!is_dir($app_data['folder_name'])){
+    if (is_dir($app_data['folder_name'])){
       return false;
     }
     exec("git clone " . $this->git_user . $this->git_repo_name);
