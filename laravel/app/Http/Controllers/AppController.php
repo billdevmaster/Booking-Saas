@@ -109,7 +109,17 @@ class AppController extends Controller
     $this->migrate_database($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD'], $lines);
 
     // save apps
-    $this->save_app($request->input('app_data'), 0);
+    $app_id = $this->save_app($request->input('app_data'), 0);
+
+    // add trial duration for 1months
+    $start_date = date("Y-m-d");
+    $end_date = $this->get_end_date($start_date, "Month", 1);
+    $app_plan = new AppPlans();
+    $app_plan->app_id = $app_id;
+    $app_plan->plan_id = 0;
+    $app_plan->start_date = $start_date;
+    $app_plan->end_date = $end_date;
+    $app_plan->save();
 
     return response()->json( ['status' => 'success'] );
   }
@@ -252,6 +262,7 @@ class AppController extends Controller
       $app->user_id = $app_data['user_id'];
     }
     $app->save();
+    return $app->id;
   }
 
   public function get_apps(Request $request) {

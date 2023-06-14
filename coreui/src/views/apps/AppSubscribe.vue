@@ -189,29 +189,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-  input,
-  button {
-    width: 100%;
-  }
-
-  button {
-    margin-top: 20px;
-  }
-
-  .payment {
-    margin-top: 20px;
-  }
-
-  .stripe-card {
-    margin-top: 10px;
-    width: 100%;
-    border: 1px solid #ccc;
-    padding: 5px 10px;
-  }
-
-  .stripe-card.complete {
-    border-color: green;
-  }
-</style> 
