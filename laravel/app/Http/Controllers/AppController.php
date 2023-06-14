@@ -99,20 +99,9 @@ class AppController extends Controller
     }
 
     // check db info correct
-    // MySQL host
-    $mysql_host = 'localhost';
-    // MySQL username
-    $mysql_username = $database_user;
-    // MySQL password
-    $mysql_password = $database_pwd;
-    // Database name
-    $mysql_database = $database;
 
     // Connect to MySQL server
-    $con = mysqli_connect($mysql_host, $mysql_username, $mysql_password) or die('Error connecting to MySQL server: ' . mysql_error());
-    // Select database
-    mysqli_select_db($con, $mysql_database) or die('Error selecting MySQL database: ' . mysql_error());
-    
+    $con = mysqli_connect($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']) or die('Error connecting to MySQL server: ' . mysql_error());
     
     // install project
     $ret = $this->install_project($request->input('app_data'));
