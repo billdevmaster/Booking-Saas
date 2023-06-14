@@ -85,6 +85,7 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/roles/move/move-down',    'RolesController@moveDown')->name('roles.down');
         Route::prefix('apps')->group(function ($router) {
             Route::post('/create',      'AppController@create');
+            Route::get('/delete',      'AppController@delete');
         });
     });
     Route::prefix('apps')->group(function ($router) {

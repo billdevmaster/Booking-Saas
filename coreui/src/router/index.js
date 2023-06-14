@@ -41,6 +41,7 @@ const Apps = () => import('@/views/apps/AppsIndex')
 const AppCreate = () => import('@/views/apps/AppCreate')
 const AppEdit = () => import('@/views/apps/AppEdit')
 const AppSubscribe = () => import('@/views/apps/AppSubscribe')
+const AppDelete = () => import('@/views/apps/AppDelete')
 
 // Plans
 const Plans = () => import('@/views/plans/PlansIndex')
@@ -317,6 +318,15 @@ function configRoutes () {
               component: AppSubscribe,
               meta: {
                 requiresUser: true
+              }
+            },
+            {
+              path: ':id/delete',
+              meta: { label: 'Delete App' },
+              name: 'DeleteApp',
+              component: AppDelete,
+              meta: {
+                requiresAdmin: true
               }
             },
           ]

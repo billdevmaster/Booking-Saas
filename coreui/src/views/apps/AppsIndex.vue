@@ -32,7 +32,7 @@
             </template>
             <template #delete="{item}">
               <td>
-                <CButton color="danger" @click="deleteUser( item.id )">Delete</CButton>
+                <CButton color="danger" @click="deleteApp( item.id )">Delete</CButton>
               </td>
             </template>
           </CDataTable>
@@ -75,6 +75,9 @@ export default {
       const editLink = this.editLink( id );
       this.$router.push({path: editLink});
     },
+    deleteApp ( id ) {
+      this.$router.push({path: `apps/${id.toString()}/delete`});
+    },
     subscribeApp ( id ) {
       this.$router.push({path: `apps/${id.toString()}/plans`});
     },
@@ -95,6 +98,9 @@ export default {
   mounted(){
     this.getApps();
     this.roles = localStorage.getItem("roles").split(",");
+    if (!this.roles.includes("admin")) {
+      this.fields = ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit']
+    }
   }
 }
 </script>

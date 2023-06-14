@@ -382,4 +382,16 @@ class AppController extends Controller
       return response()->json(['end_date' => $app_plans[0]->end_date]);
     }
   }
+
+  public function delete(Request $request) {
+    $app = Apps::find($request->input('app_id'));
+    $folder_name = $app->folder_name;
+    chdir(env('NEW_APP_DIR'));
+    if (is_dir($folder_name)) {
+      rmdir($folder_name);
+    }
+    $app->deleted_at = date("Y-m-d H:i:s");
+    $app->save();
+    return response()->json( array('success' => true) );
+  }
 }
