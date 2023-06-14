@@ -89,8 +89,7 @@ class AppController extends Controller
 
     // check valid inputs
     $ret = $this->check_validation($request->input('app_data'));
-    var_dump($ret);
-    return;
+    
     if (!$ret) {
       return response()->json([
         'status' => 'error',
