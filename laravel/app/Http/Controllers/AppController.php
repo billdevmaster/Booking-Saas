@@ -89,6 +89,8 @@ class AppController extends Controller
 
     // check valid inputs
     $ret = $this->check_validation($request->input('app_data'));
+    var_dump($ret);
+    return;
     if (!$ret) {
       return response()->json([
         'status' => 'error',
@@ -126,7 +128,11 @@ class AppController extends Controller
 
   private function check_validation($app_data) {
     // check if name is exist
-    $app = Apps::where("APP_NAME", $app_data['APP_NAME'])->orwhere("url", $this->new_app_base_url . $app_data['folder_name'])->whereNull('deleted_at')->first();
+    $app = Apps::whereNull('deleted_at')
+      ->where(function($query1) use($app_data) {
+        $query1->where("APP_NAME", $app_data['APP_NAME'])->orwhere("url", $this->new_app_base_url . $app_data['folder_name']);
+      })->first();
+    
     if ($app != null) {
       return false;
     } else {
