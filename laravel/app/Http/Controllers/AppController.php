@@ -113,7 +113,7 @@ class AppController extends Controller
 
     // add trial duration for 1months
     $start_date = date("Y-m-d");
-    $end_date = $this->get_end_date($start_date, "Month", 1);
+    $end_date = $this->get_end_date($start_date, 1, "Month");
     $app_plan = new AppPlans();
     $app_plan->app_id = $app_id;
     $app_plan->plan_id = 0;
