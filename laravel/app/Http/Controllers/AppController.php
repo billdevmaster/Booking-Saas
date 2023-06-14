@@ -101,7 +101,7 @@ class AppController extends Controller
     // check db info correct
 
     // Connect to MySQL server
-    $con = mysqli_connect($request->input('app_data')['DB_DATABASE'], $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']) or die('Error connecting to MySQL server: ' . mysql_error());
+    $con = mysqli_connect('localhost', $request->input('app_data')['DB_USERNAME'], $request->input('app_data')['DB_PASSWORD']) or die('Error connecting to MySQL server: ' . mysql_error());
     
     // install project
     $ret = $this->install_project($request->input('app_data'));
