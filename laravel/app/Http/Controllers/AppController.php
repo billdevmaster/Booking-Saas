@@ -126,6 +126,7 @@ class AppController extends Controller
     $app_plan->plan_id = 0;
     $app_plan->start_date = $start_date;
     $app_plan->end_date = $end_date;
+    $app_plan->status = "trial";
     $app_plan->save();
 
     return response()->json( ['status' => 'success'] );

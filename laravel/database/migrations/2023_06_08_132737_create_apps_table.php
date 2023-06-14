@@ -15,8 +15,8 @@ class CreateAppsTable extends Migration
     {
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
-            $table->string('APP_NAME')->unique();
-            $table->string('folder_name')->unique();
+            $table->string('APP_NAME');
+            $table->string('folder_name');
             $table->string('url')->unique();
             $table->string('DB_USERNAME');
             $table->string('DB_DATABASE');
