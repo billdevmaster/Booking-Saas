@@ -6,7 +6,7 @@
         <CCardHeader>
           Apps
         </CCardHeader>
-        <CCol col="3" xl="2">
+        <CCol col="3" xl="2" v-if="roles.includes('admin')">
           <div class="mt-2">
             <CButton color="primary" @click="addApp()" class="mb-3">Adds App</CButton>
           </div>
@@ -30,11 +30,6 @@
                 <CButton color="primary" @click="editApp( item.id )">Edit</CButton>
               </td>
             </template>
-            <template #subscribe="{item}">
-              <td>
-                <CButton color="primary" @click="subscribeApp( item.id )">Edit</CButton>
-              </td>
-            </template>
             <template #delete="{item}">
               <td>
                 <CButton color="danger" @click="deleteUser( item.id )">Delete</CButton>
@@ -56,10 +51,11 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit', 'subscribe', 'delete'],
+      fields: ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit', 'delete'],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,
+      roles: []
     }
   },
   paginationProps: {
@@ -80,7 +76,7 @@ export default {
       this.$router.push({path: editLink});
     },
     subscribeApp ( id ) {
-      this.$router.push({path: `apps/${id.toString()}/subscribe`});
+      this.$router.push({path: `apps/${id.toString()}/plans`});
     },
     getApps() {
       let self = this;
@@ -89,12 +85,16 @@ export default {
         self.items = response.data.apps;
       }).catch(function (error) {
         console.log(error);
+        if (error.response.status === 401) {
+          self.$router.push({ path: '/login' });
+        }
         // self.$router.push({ path: '/login' });
       });
     }
   },
   mounted(){
     this.getApps();
+    this.roles = localStorage.getItem("roles").split(",");
   }
 }
 </script>

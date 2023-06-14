@@ -93,7 +93,7 @@ function configRoutes () {
   return [
     {
       path: '/',
-      redirect: '/dashboard',
+      redirect: '/apps',
       name: 'Home',
       component: TheContainer,
       children: [
@@ -311,7 +311,7 @@ function configRoutes () {
               }
             },
             {
-              path: ':id/subscribe',
+              path: ':app_id/:plan_id/subscribe',
               meta: { label: 'Subscribe App' },
               name: 'SubscibeApp',
               component: AppSubscribe,

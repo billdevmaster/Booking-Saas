@@ -18,6 +18,7 @@
         <CInput label="Username" type="text" placeholder="Batabase username" v-model="appData.DB_USERNAME"></CInput>
         <CInput label="Password" type="text" placeholder="Database password" v-model="appData.DB_PASSWORD"></CInput>
         <CSelect
+          v-if="roles.includes('admin')"
           label="User"
           vertical
           :options="users"
@@ -53,6 +54,7 @@ export default {
       dismissCountDown: 0,
       showDismissibleAlert: false,
       users: [],
+      roles: []
     }
   },
   methods: {
@@ -99,12 +101,15 @@ export default {
           self.alertType = 'danger';
           self.message = error.response.data.message;
           self.showAlert();          
+        } else if (error.response.status === 401) {
+          self.$router.push({ path: '/login' });
         }
       })
     }
   },
   mounted: function () {
     this.getUsers();
+    this.roles = localStorage.getItem("roles").split(",");
   }
 }
 </script>

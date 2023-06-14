@@ -29,7 +29,7 @@ class PlansController extends Controller
     }
     $plan->name = $request->input('plan_data')['name'];
     $plan->description = $request->input('plan_data')['description'];
-    $plan->duration = $request->input('plan_data')['duration'];
+    $plan->billing_interval = $request->input('plan_data')['billing_interval'];
     $plan->price = $request->input('plan_data')['price'];
     $plan->save();
     return response()->json( ['status' => 'success'] );

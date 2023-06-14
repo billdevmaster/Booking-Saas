@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePlansTable extends Migration
+class CreateAppPlansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreatePlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('plans', function (Blueprint $table) {
+        Schema::create('app_plans', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->string("description");
-            $table->string("billing_interval");
-            $table->float("price", 8, 2);
-            $table->softDeletes();
+            $table->integer('app_id')->unsigned()->nullable();
+            $table->integer('plan_id')->unsigned()->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->string('status');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreatePlansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('plans');
+        Schema::dropIfExists('app_plans');
     }
 }

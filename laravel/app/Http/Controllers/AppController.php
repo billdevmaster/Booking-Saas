@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Apps;
+use App\Models\Plans;
+use App\Models\AppPlans;
 use DataTables;
 use Stripe\Stripe;
 use Stripe\Charge;
+use DateTime;
+use DateInterval;
 
 class AppController extends Controller
 {
@@ -251,10 +255,19 @@ class AppController extends Controller
   }
 
   public function get_apps(Request $request) {
-    $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
+    $user = auth()->user();
+    $roles = explode(",", $user->menuroles);
+    if (in_array("admin", $roles)) {
+      $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
         ->whereNull('deleted_at')
         ->get();
-        return response()->json( compact('apps') );
+    } else {
+      $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
+        ->where("user_id", $user->id)
+        ->whereNull('deleted_at')
+        ->get();
+    }
+    return response()->json( compact('apps') );
   }
 
   public function get_app(Request $request) {
@@ -285,24 +298,41 @@ class AppController extends Controller
     return response()->json( compact('users') );
   }
 
-  public function processPayment(Request $request)
+  public function process_payment(Request $request)
   {
     $stripeSecretKey = env('STRIPE_SECRET');
     Stripe::setApiKey($stripeSecretKey);
 
     $token = $request->input('token');
-
+    $plan = Plans::find($request->input('plan_id'));
+    $amount = $plan->price * $request->input('payMonths');
     try {
       $charge = Charge::create([
-          'amount' => 1000, // Replace with your desired amount in cents
+          'amount' => $amount * 100, // Replace with your desired amount in cents
           'currency' => 'usd',
-          'description' => 'Example Charge',
-          'source' => $token,
+          'description' => 'Pay for Booking app',
+          'source' => $token['id'],
       ]);
+      $today = date('Y-m-d');
+      $start_date = $today;
+      // get app's allowed period.
+      $app_plans = AppPlans::where('end_date', '>=', $today)->first();
+
+      if ($app_plans != null) {
+        $start_date = $app_plans->end_date;
+      }
+
+      $end_date = $this->get_end_date($start_date, $request->input('payMonths'), $plan->billing_interval);
+      $new_app_plan = new AppPlans();
+      $new_app_plan->app_id = $request->input('app_id');
+      $new_app_plan->plan_id = $request->input('plan_id');
+      $new_app_plan->start_date = $start_date;
+      $new_app_plan->end_date = $end_date;
+      $new_app_plan->status = 'START';
+      $new_app_plan->save();
 
       // Handle the successful payment
       // You can store the payment details in your database or perform any other actions here
-
       return response()->json([
           'success' => true,
           'message' => 'Payment processed successfully.',
@@ -314,6 +344,31 @@ class AppController extends Controller
           'message' => 'Payment failed. Please try again.',
           'error' => $e->getMessage(),
       ]);
+    }
+  }
+
+  private function get_end_date($start_date, $interval, $type) {
+    $pass_type = $type == 'Month' ? 'M' : 'Y';
+    // create a DateTime object from the start date
+    $dt = new DateTime($start_date);
+
+    // add x months to the DateTime object
+    $dt->add(new DateInterval('P' . $interval . $pass_type));
+
+    // get the end date in the desired format (e.g. Y-m-d)
+    $end_date = $dt->format('Y-m-d');
+
+    // output the end date
+    return $end_date;
+  }
+
+  public function get_app_end_date(Request $request) {
+    $app_id = $request->input('app_id');
+    $app_plans = AppPlans::where('app_id', $app_id)->orderBy('created_at', 'DESC')->get();
+    if (count($app_plans) == 0) {
+      return response()->json(['end_date' => null]);
+    } else {
+      return response()->json(['end_date' => $app_plans[0]->end_date]);
     }
   }
 }

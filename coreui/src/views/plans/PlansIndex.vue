@@ -51,7 +51,7 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'name', 'description', 'duration', 'price', 'edit', 'delete'],
+      fields: ['id', 'name', 'description', 'billing_interval', 'price', 'edit', 'delete'],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,
@@ -80,8 +80,10 @@ export default {
       .then(function (response) {
         self.items = response.data.plans;
       }).catch(function (error) {
-        console.log(error);
-        // self.$router.push({ path: '/login' });
+        console.log(error)
+        if (error.response.status === 401) {
+          self.$router.push({ path: '/login' });
+        }
       });
     }
   },

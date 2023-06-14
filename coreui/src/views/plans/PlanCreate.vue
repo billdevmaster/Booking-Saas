@@ -15,7 +15,13 @@
 
         <CInput label="Plan Name" type="text" placeholder="name" v-model="planData.name"></CInput>
         <CInput label="Plan Description" type="text" placeholder="description" v-model="planData.description"></CInput>
-        <CInput label="Plan Duration(days)" type="number" placeholder="duration" v-model="planData.duration"></CInput>
+        <CSelect
+          label="Biiling Interval"
+          vertical
+          :options="billingIntervals"
+          placeholder="Please select"
+          :value.sync="planData.billing_interval"
+        />
         <CInput label="Plan Price" type="number" placeholder="price" step="0.01" v-model="planData.price"></CInput>
 
         <CButton color="primary" @click="create()">Create</CButton>
@@ -36,9 +42,10 @@ export default {
       planData: {
         name: "",
         description: "",
-        duration: "",
+        billing_interval: "",
         price: "",
       },
+      billingIntervals: ["Month", "Year"],
       message: '',
       alertType: 'primary',
       dismissSecs: 7,

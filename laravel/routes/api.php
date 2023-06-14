@@ -12,7 +12,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('test', 'AuthController@test'); 
 Route::group(['middleware' => 'api'], function ($router) {
     Route::get('menu', 'MenuController@index');
 
@@ -84,14 +83,17 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::resource('roles',        'RolesController');
         Route::get('/roles/move/move-up',      'RolesController@moveUp')->name('roles.up');
         Route::get('/roles/move/move-down',    'RolesController@moveDown')->name('roles.down');
-
         Route::prefix('apps')->group(function ($router) {
-            Route::get('/',    'AppController@get_apps');
             Route::post('/create',      'AppController@create');
-            Route::get('/get_app',      'AppController@get_app');
-            Route::post('/update',      'AppController@update');
-            Route::get('/get_clients',  'AppController@get_clients');
         });
+    });
+    Route::prefix('apps')->group(function ($router) {
+        Route::get('/',    'AppController@get_apps');
+        Route::get('/get_app',      'AppController@get_app');
+        Route::post('/update',      'AppController@update');
+        Route::get('/get_clients',  'AppController@get_clients');
+        Route::post('/process_payment', 'AppController@process_payment');
+        Route::get('/get_app_end_date', 'AppController@get_app_end_date');
     });
 });
 
