@@ -388,10 +388,27 @@ class AppController extends Controller
     $folder_name = $app->folder_name;
     chdir(env('NEW_APP_DIR'));
     if (is_dir($folder_name)) {
-      rmdir($folder_name);
+      $this->removeDirectory($folder_name);
     }
     $app->deleted_at = date("Y-m-d H:i:s");
     $app->save();
     return response()->json( array('success' => true) );
   }
+
+  private function removeDirectory($dir) {
+    if (is_dir($dir)) {
+        $objects = scandir($dir);
+        foreach ($objects as $object) {
+            if ($object != "." && $object != "..") {
+                if (filetype($dir."/".$object) == "dir") {
+                    removeDirectory($dir."/".$object);
+                } else {
+                    unlink($dir."/".$object);
+                }
+            }
+        }
+        reset($objects);
+        rmdir($dir);
+    }
+}
 }
