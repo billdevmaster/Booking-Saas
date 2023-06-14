@@ -67,6 +67,9 @@ class AppController extends Controller
     
     MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"
     MIX_PUSHER_APP_CLUSTER="${PUSHER_APP_CLUSTER}"
+    SASS_APP_DATABASE=
+    SASS_APP_DATABASE_USER=
+    SASS_APP_DATABASE_PASSWORD=
   ';
   private $new_app_base_url = "https://bookid.ee/";
   private $git_user = "https://github.com/billdevmaster/";
@@ -215,6 +218,12 @@ class AppController extends Controller
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . $app_data['APP_NAME'];
       } else if (trim($env_arr[0]) == "APP_KEY") {
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('NEW_APP_KEY');
+      } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_DATABASE');
+      } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE_USER") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_USERNAME');
+      } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE_PASSWORD") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_PASSWORD');
       } else {
         $env_text_arr[$i] = trim($env_text_arr[$i]);
       }
