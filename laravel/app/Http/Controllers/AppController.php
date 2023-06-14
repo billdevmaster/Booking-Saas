@@ -180,9 +180,10 @@ class AppController extends Controller
     chdir(env('NEW_APP_DIR'));
     // check if there is already dir.
     if (!is_dir($app_data['folder_name'])){
-      exec("git clone " . $this->git_user . $this->git_repo_name);
-      rename($this->git_repo_name, $app_data['folder_name']);
+      return false;
     }
+    exec("git clone " . $this->git_user . $this->git_repo_name);
+    rename($this->git_repo_name, $app_data['folder_name']);
     chdir($app_data['folder_name']);
 
     // create .env file
