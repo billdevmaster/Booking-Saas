@@ -401,7 +401,7 @@ class AppController extends Controller
         foreach ($objects as $object) {
             if ($object != "." && $object != "..") {
                 if (filetype($dir."/".$object) == "dir") {
-                    removeDirectory($dir."/".$object);
+                    $this->removeDirectory($dir."/".$object);
                 } else {
                     unlink($dir."/".$object);
                 }
