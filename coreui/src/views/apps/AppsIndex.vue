@@ -51,7 +51,7 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit', 'delete'],
+      fields: ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'end_date', 'edit', 'delete'],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,
@@ -99,7 +99,7 @@ export default {
     this.getApps();
     this.roles = localStorage.getItem("roles").split(",");
     if (!this.roles.includes("admin")) {
-      this.fields = ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'edit']
+      this.fields = ['id', 'APP_NAME', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'end_date', 'edit']
     }
   }
 }

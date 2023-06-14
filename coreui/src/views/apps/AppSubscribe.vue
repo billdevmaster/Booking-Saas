@@ -6,6 +6,13 @@
           Subscription Detail
         </div>
         <div class="card-body">
+          <CAlert
+            :show.sync="dismissCountDown"
+            :color.sync="alertType"
+            fade
+          >
+            ({{dismissCountDown}}) {{ message }}
+          </CAlert>
           <dl class="row">
             <dt class="col-sm-3">Allowed End Date</dt>
             <dd class="col-sm-9">
@@ -96,7 +103,12 @@ export default {
       payMonths: 1,
       appEnd: "",
       durationStart: new Date(),
-      durationEnd: new Date()
+      durationEnd: new Date(),
+      message: '',
+      alertType: 'primary',
+      dismissSecs: 7,
+      dismissCountDown: 0,
+      showDismissibleAlert: false,
     }
   },
 
@@ -114,18 +126,29 @@ export default {
         // Handle result.error or result.token
       })
     },
+    countDownChanged (dismissCountDown) {
+      this.dismissCountDown = dismissCountDown
+    },
+    showAlert () {
+      this.dismissCountDown = this.dismissSecs
+    },
     processPayment(token) {
       let self = this;
       axios.post(this.$apiAdress + '/api/apps/process_payment?token=' + localStorage.getItem("api_token"), { token, plan_id: self.$route.params.plan_id, app_id: self.$route.params.app_id, payMonths: self.payMonths })
       .then(response => {
         if (response.data.success) {
-          console.log(response.data.message);
+          self.message = response.data.message;
+          self.showAlert();
         } else {
-          console.error(response.data.message);
+          self.alertType = 'danger';
+          self.message = response.data.message;
+          self.showAlert();
         }
       })
       .catch(error => {
-        console.error(error);
+        self.alertType = 'danger';
+        self.message = "Server Error";
+        self.showAlert();
       });
     },
     getPlan() {

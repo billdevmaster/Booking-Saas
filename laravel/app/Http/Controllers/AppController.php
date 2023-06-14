@@ -299,6 +299,10 @@ class AppController extends Controller
         ->whereNull('deleted_at')
         ->get();
     }
+    for($i = 0; $i < count($apps); $i++) {
+      $end_date = $this->get_app_enddate($apps[$i]->id);
+      $apps[$i]->end_date = $end_date;
+    }
     return response()->json( compact('apps') );
   }
 
@@ -396,11 +400,16 @@ class AppController extends Controller
 
   public function get_app_end_date(Request $request) {
     $app_id = $request->input('app_id');
+    $end_date = $this->get_app_enddate($app_id);
+    return response()->json(['end_date' => $end_date]);
+  }
+
+  private function get_app_enddate($app_id) {
     $app_plans = AppPlans::where('app_id', $app_id)->orderBy('created_at', 'DESC')->get();
     if (count($app_plans) == 0) {
-      return response()->json(['end_date' => null]);
+      return null;
     } else {
-      return response()->json(['end_date' => $app_plans[0]->end_date]);
+      return $app_plans[0]->end_date;
     }
   }
 
