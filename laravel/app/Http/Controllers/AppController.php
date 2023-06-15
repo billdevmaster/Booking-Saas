@@ -230,7 +230,7 @@ class AppController extends Controller
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_USERNAME');
       } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE_PASSWORD") {
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_PASSWORD');
-      } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE_PASSWORD") {
+      } else if (trim($env_arr[0]) == "SAAS_URL") {
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('APP_URL');
       } else {
         $env_text_arr[$i] = trim($env_text_arr[$i]);
