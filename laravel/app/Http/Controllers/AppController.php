@@ -298,11 +298,11 @@ class AppController extends Controller
     $user = auth()->user();
     $roles = explode(",", $user->menuroles);
     if (in_array("admin", $roles)) {
-      $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
+      $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.url', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
         ->whereNull('deleted_at')
         ->get();
     } else {
-      $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
+      $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.url', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
         ->where("user_id", $user->id)
         ->whereNull('deleted_at')
         ->get();
