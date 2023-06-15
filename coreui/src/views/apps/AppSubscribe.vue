@@ -134,7 +134,7 @@ export default {
     },
     processPayment(token) {
       let self = this;
-      axios.post(this.$apiAdress + '/api/apps/process_payment?token=' + localStorage.getItem("api_token"), { token, plan_id: self.$route.params.plan_id, app_id: self.$route.params.app_id, payMonths: self.payMonths })
+      axios.post(this.$apiAdress + '/api/apps/process_payment?token=' + localStorage.getItem("api_token"), { stripe_token, plan_id: self.$route.params.plan_id, app_id: self.$route.params.app_id, payMonths: self.payMonths })
       .then(response => {
         if (response.data.success) {
           self.message = response.data.message;

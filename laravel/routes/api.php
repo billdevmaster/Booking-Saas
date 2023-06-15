@@ -93,7 +93,8 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/get_app',      'AppController@get_app');
         Route::post('/update',      'AppController@update');
         Route::get('/get_clients',  'AppController@get_clients');
-        Route::post('/process_payment', 'AppController@process_payment');
+        Route::get('/process_payment', 'AppController@process_payment');
+        Route::get('/test', 'AppController@test');
         Route::get('/get_app_end_date', 'AppController@get_app_end_date');
     });
 });

@@ -70,6 +70,7 @@ class AppController extends Controller
     SAAS_APP_DATABASE=
     SAAS_APP_DATABASE_USER=
     SAAS_APP_DATABASE_PASSWORD=
+    SAAS_URL=
   ';
   private $new_app_base_url = "https://bookid.ee/";
   private $git_user = "https://github.com/billdevmaster/";
@@ -82,7 +83,12 @@ class AppController extends Controller
    */
   public function __construct()
   {
-    $this->middleware('auth:api');
+    $this->middleware('auth:api', ['except' => ['process_payment', 'test']]);
+  }
+
+  public function test()
+  {
+      echo "okay";
   }
 
   public function create(Request $request)
@@ -224,6 +230,8 @@ class AppController extends Controller
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_USERNAME');
       } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE_PASSWORD") {
         $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('DB_PASSWORD');
+      } else if (trim($env_arr[0]) == "SAAS_APP_DATABASE_PASSWORD") {
+        $env_text_arr[$i] = trim($env_arr[0]) . '=' . env('APP_URL');
       } else {
         $env_text_arr[$i] = trim($env_text_arr[$i]);
       }
@@ -339,7 +347,7 @@ class AppController extends Controller
     $stripeSecretKey = env('STRIPE_SECRET');
     Stripe::setApiKey($stripeSecretKey);
 
-    $token = $request->input('token');
+    $token = $request->input('stripe_token');
     $plan = Plans::find($request->input('plan_id'));
     $amount = $plan->price * $request->input('payMonths');
     try {
@@ -349,13 +357,15 @@ class AppController extends Controller
           'description' => 'Pay for Booking app',
           'source' => $token['id'],
       ]);
-      $today = date('Y-m-d');
-      $start_date = $today;
+
+      $start_date = null;
       // get app's allowed period.
-      $app_plans = AppPlans::where('end_date', '>=', $today)->first();
+      $app_plans = AppPlans::where("app_id", $request->input('app_id'))->orderBy('end_date', 'DESC')->first();
 
       if ($app_plans != null) {
         $start_date = $app_plans->end_date;
+      } else {
+        $start_date = date('Y-m-d');
       }
 
       $end_date = $this->get_end_date($start_date, $request->input('payMonths'), $plan->billing_interval);
