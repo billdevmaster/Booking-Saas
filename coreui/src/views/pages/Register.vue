@@ -6,10 +6,10 @@
           <CCard class="mx-4 mb-0">
             <CCardBody class="p-4">
               <CForm @submit.prevent="register" method="POST">
-                <h1>Register</h1>
-                <p class="text-muted">Create your account</p>
+                <h1>Registreeri</h1>
+                <p class="text-muted">Loo enda konto</p>
                 <CInput
-                  placeholder="Username"
+                  placeholder="Kasutajanimi"
                   prependHtml="<i class='cui-user'></i>"
                   autocomplete="username"
                   v-model="name"
@@ -17,13 +17,13 @@
                   <template #prepend-content><CIcon name="cil-user"/></template>
                 </CInput>
                 <CInput
-                  placeholder="Email"
+                  placeholder="Meil"
                   prepend="@"
                   autocomplete="email"
                   v-model="email"
                 />
                 <CInput
-                  placeholder="Password"
+                  placeholder="Parool"
                   type="password"
                   prependHtml="<i class='cui-lock-locked'></i>"
                   autocomplete="new-password"
@@ -32,7 +32,7 @@
                   <template #prepend-content><CIcon name="cil-lock-locked"/></template>
                 </CInput>
                 <CInput
-                  placeholder="Repeat password"
+                  placeholder="Korda salasõna"
                   type="password"
                   prependHtml="<i class='cui-lock-locked'></i>"
                   autocomplete="new-password"
@@ -41,10 +41,10 @@
                 >
                   <template #prepend-content><CIcon name="cil-lock-locked"/></template>
                 </CInput>
-                <CButton type="submit" color="success" block>Create Account</CButton>
+                <CButton type="submit" color="success" block>Loo konto</CButton>
               </CForm>
             </CCardBody>
-            <CCardFooter class="p-4">
+            <!-- <CCardFooter class="p-4">
               <CRow>
                 <CCol col="6">
                   <CButton block color="facebook">
@@ -57,7 +57,7 @@
                   </CButton>
                 </CCol>
               </CRow>
-            </CCardFooter>
+            </CCardFooter> -->
           </CCard>
         </CCol>
       </CRow>

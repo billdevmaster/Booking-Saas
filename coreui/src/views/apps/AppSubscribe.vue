@@ -3,7 +3,7 @@
     <CCol col="8">
       <div class="card">
         <div class="card-header">
-          Subscription Detail
+          Tellimuse üksikasjad
         </div>
         <div class="card-body">
           <CAlert
@@ -14,19 +14,19 @@
             ({{dismissCountDown}}) {{ message }}
           </CAlert>
           <dl class="row">
-            <dt class="col-sm-3">Allowed End Date</dt>
+            <dt class="col-sm-3">Lubatud lõppkuupäev</dt>
             <dd class="col-sm-9">
               {{ appEnd }}
             </dd>
-            <dt class="col-sm-3">Name</dt>
+            <dt class="col-sm-3">Nimi</dt>
             <dd class="col-sm-9">
               {{ plan.name }}
             </dd>
-            <dt class="col-sm-3">Description</dt>
+            <dt class="col-sm-3">Kirjeldus</dt>
             <dd class="col-sm-9">
               {{ plan.description }}
             </dd>
-            <dt class="col-sm-3">Plan</dt>
+            <dt class="col-sm-3">Plaan</dt>
             <dd class="col-sm-9">
               {{ plan.price }}$ / {{ plan.billing_interval }}
             </dd>
@@ -34,11 +34,11 @@
             <dd class="col-sm-9">
               <CInput class="mb-0" type="number" v-model="payMonths" @change="onMonthsChange($event)" />
             </dd>
-            <dt class="col-sm-3">Pay Amount</dt>
+            <dt class="col-sm-3">Makse summa</dt>
             <dd class="col-sm-9">
              {{ plan.price * payMonths }} $
             </dd>
-            <dt class="col-sm-3">Period</dt>
+            <dt class="col-sm-3">Periood</dt>
             <dd class="col-sm-9">
               From {{ formatDate(durationStart) }} To {{ formatDate(durationEnd) }}
             </dd>
@@ -60,7 +60,7 @@
               />
             </StripeElements>
             
-            <CButton color="primary" class="mt-3" @click="pay" type="button">Pay</CButton>
+            <CButton color="primary" class="mt-3" @click="pay" type="button">Maksma</CButton>
           </div>
         </div>
       </div>

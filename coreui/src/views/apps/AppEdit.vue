@@ -5,7 +5,7 @@
         <CCard no-header>
           <CCardBody>
             <h3>
-              Edit App
+              Redigeeri rakendust
             </h3>
             <CAlert
                 :show.sync="dismissCountDown"
@@ -14,11 +14,11 @@
               >
               ({{dismissCountDown}}) {{ message }}
             </CAlert>
-            <CInput label="App Name" type="text" placeholder="Title" v-model="appData.APP_NAME"></CInput>
-            <CInput label="Folder Name" type="text" placeholder="foler name" v-model="appData.folder_name"></CInput>
-            <CInput label="Database" type="text" placeholder="Database" v-model="appData.DB_DATABASE"></CInput>
-            <CInput label="Username" type="text" placeholder="Batabase username" v-model="appData.DB_USERNAME"></CInput>
-            <CInput label="Password" type="text" placeholder="Database password" v-model="appData.DB_PASSWORD"></CInput>
+            <CInput label="Rakenduse nimi" type="text" placeholder="Title" v-model="appData.APP_NAME"></CInput>
+            <CInput label="Kausta nimi" type="text" placeholder="foler name" v-model="appData.folder_name"></CInput>
+            <CInput label="Andmebaas" type="text" placeholder="Database" v-model="appData.DB_DATABASE"></CInput>
+            <CInput label="Kasutajanimi" type="text" placeholder="Batabase username" v-model="appData.DB_USERNAME"></CInput>
+            <CInput label="Parool" type="text" placeholder="Database password" v-model="appData.DB_PASSWORD"></CInput>
             <CSelect
               v-if="roles.includes('admin')"
               label="User"
@@ -28,8 +28,8 @@
               :value.sync="appData.user_id"
             />
             
-            <CButton color="primary" @click="update()">Update</CButton>
-            <CButton color="primary" @click="goBack">Back</CButton>
+            <CButton color="primary" @click="update()">Värskenda</CButton>
+            <CButton color="primary" @click="goBack">tagasi</CButton>
     
           </CCardBody>
         </CCard>
@@ -38,12 +38,12 @@
         <CCard no-header>
           <CCardBody>
             <h3>
-              App Subscribe
+              Rakenduse tellimine
             </h3>
             <CRow class="mt-4">
               <CCol col="12">
                 <div class="row">
-                  <dt class="col-sm-4">Allowed End Date</dt>
+                  <dt class="col-sm-4">Lubatud lõppkuupäev</dt>
                   <dd class="col-sm-8">
                     {{ appEnd }}
                   </dd>
@@ -58,7 +58,7 @@
                     <h5>
                       {{ plan.name }}
                     </h5>
-                    <CButton color="warning" @click="subscribe(plan.id)">SubScribe</CButton>
+                    <CButton color="warning" @click="subscribe(plan.id)">Telli</CButton>
                   </CCardBody>
                 </CCard>
               </CCol>

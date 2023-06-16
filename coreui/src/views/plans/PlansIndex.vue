@@ -4,11 +4,11 @@
       <transition name="slide">
       <CCard>
         <CCardHeader>
-          Plans
+          Plaanid
         </CCardHeader>
         <CCol col="3" xl="2">
           <div class="mt-2">
-            <CButton color="primary" @click="addPlan()" class="mb-3">Adds Plans</CButton>
+            <CButton color="primary" @click="addPlan()" class="mb-3">Lisab plaanid</CButton>
           </div>
         </CCol>
         <CCardBody>
@@ -27,12 +27,12 @@
             </template>
             <template #edit="{item}">
               <td>
-                <CButton color="primary" @click="editPlan( item.id )">Edit</CButton>
+                <CButton color="primary" @click="editPlan( item.id )">Muuda</CButton>
               </td>
             </template>
             <template #delete="{item}">
               <td>
-                <CButton color="danger" @click="deleteUser( item.id )">Delete</CButton>
+                <CButton color="danger" @click="deleteUser( item.id )">Kustuta</CButton>
               </td>
             </template>
           </CDataTable>
@@ -51,7 +51,7 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'name', 'description', 'billing_interval', 'price', 'edit', 'delete'],
+      fields: [{key: 'id', label: 'ID'}, {key: 'name', label: 'Nimi'}, {key: 'description', label: 'Kirjeldus'}, {key: 'billing_interval', label: 'Arveldusintervall'}, {key: 'price', label: 'Hind'}, {key: 'edit', label: 'Muuda'}, {key: 'delete', label: 'Kustutada'}],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,

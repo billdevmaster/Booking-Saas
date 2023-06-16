@@ -3,7 +3,7 @@
     <CCard no-header>
       <CCardBody>
         <h3>
-          Create Plans
+          Loo plaane
         </h3>
         <CAlert
             :show.sync="dismissCountDown"
@@ -13,19 +13,19 @@
           ({{dismissCountDown}}) {{ message }}
         </CAlert>
 
-        <CInput label="Plan Name" type="text" placeholder="name" v-model="planData.name"></CInput>
-        <CInput label="Plan Description" type="text" placeholder="description" v-model="planData.description"></CInput>
+        <CInput label="Plaani nimi" type="text" placeholder="name" v-model="planData.name"></CInput>
+        <CInput label="Plaani kirjeldus" type="text" placeholder="description" v-model="planData.description"></CInput>
         <CSelect
-          label="Biiling Interval"
+          label="Arveldusintervall"
           vertical
           :options="billingIntervals"
           placeholder="Please select"
           :value.sync="planData.billing_interval"
         />
-        <CInput label="Plan Price" type="number" placeholder="price" step="0.01" v-model="planData.price"></CInput>
+        <CInput label="Plaani hind" type="number" placeholder="price" step="0.01" v-model="planData.price"></CInput>
 
-        <CButton color="primary" @click="create()">Create</CButton>
-        <CButton color="primary" @click="goBack">Back</CButton>
+        <CButton color="primary" @click="create()">Loo</CButton>
+        <CButton color="primary" @click="goBack">tagasi</CButton>
 
       </CCardBody>
     </CCard>

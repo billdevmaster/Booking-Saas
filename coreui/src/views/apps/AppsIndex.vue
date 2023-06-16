@@ -4,11 +4,11 @@
       <transition name="slide">
       <CCard>
         <CCardHeader>
-          Apps
+          Rakendused
         </CCardHeader>
         <CCol col="3" xl="2" v-if="roles.includes('admin')">
           <div class="mt-2">
-            <CButton color="primary" @click="addApp()" class="mb-3">Adds App</CButton>
+            <CButton color="primary" @click="addApp()" class="mb-3">Lisab rakenduse</CButton>
           </div>
         </CCol>
         <CCardBody>
@@ -27,12 +27,12 @@
             </template>
             <template #edit="{item}">
               <td>
-                <CButton color="primary" @click="editApp( item.id )">Edit</CButton>
+                <CButton color="primary" @click="editApp( item.id )">Muuda</CButton>
               </td>
             </template>
             <template #delete="{item}">
               <td>
-                <CButton color="danger" @click="deleteApp( item.id )">Delete</CButton>
+                <CButton color="danger" @click="deleteApp( item.id )">Kustuta</CButton>
               </td>
             </template>
           </CDataTable>
@@ -51,7 +51,7 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: ['id', 'APP_NAME', 'url', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'end_date', 'edit', 'delete'],
+      fields: [{key: 'id', label: 'ID'}, {key: 'APP_NAME', label: 'RAKENDUSE NIMI'}, {key: 'url', label: 'URL'}, {key: 'folder_name', label: 'KAUTA NIMI'}, {key: 'DB_DATABASE', label: 'ANDMEBAAS'}, {key: 'DB_USERNAME', label: "ANDMEBAAS KASUTAJANIMI"}, {key: 'end_date', label: 'LÕPPKUUPÄEV'}, {key: 'edit', label: 'MUUDA'}, {key: 'delete', label: 'KUSTUTA'}],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,
@@ -99,7 +99,7 @@ export default {
     this.getApps();
     this.roles = localStorage.getItem("roles").split(",");
     if (!this.roles.includes("admin")) {
-      this.fields = ['id', 'APP_NAME', 'url', 'folder_name', 'DB_DATABASE', 'DB_USERNAME', 'end_date', 'edit']
+      this.fields = [{key: 'id', label: 'ID'}, {key: 'APP_NAME', label: 'RAKENDUSE NIMI'}, {key: 'url', label: 'URL'}, {key: 'folder_name', label: 'KAUTA NIMI'}, {key: 'DB_DATABASE', label: 'ANDMEBAAS'}, {key: 'DB_USERNAME', label: "ANDMEBAAS KASUTAJANIMI"}, {key: 'end_date', label: 'LÕPPKUUPÄEV'}, {key: 'edit', label: 'MUUDA'}]
     }
   }
 }

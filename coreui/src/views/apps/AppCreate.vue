@@ -3,7 +3,7 @@
     <CCard no-header>
       <CCardBody>
         <h3>
-          Create Apps
+          Looge rakendusi
         </h3>
         <CAlert
             :show.sync="dismissCountDown"
@@ -12,11 +12,11 @@
           >
           ({{dismissCountDown}}) {{ message }}
         </CAlert>
-        <CInput label="App Name" type="text" placeholder="Title" v-model="appData.APP_NAME"></CInput>
-        <CInput label="Folder Name" type="text" placeholder="foler name" v-model="appData.folder_name"></CInput>
-        <CInput label="Database" type="text" placeholder="Database" v-model="appData.DB_DATABASE"></CInput>
-        <CInput label="Username" type="text" placeholder="Batabase username" v-model="appData.DB_USERNAME"></CInput>
-        <CInput label="Password" type="text" placeholder="Database password" v-model="appData.DB_PASSWORD"></CInput>
+        <CInput label="Rakenduse nimi" type="text" placeholder="Title" v-model="appData.APP_NAME"></CInput>
+        <CInput label="Kausta nimi" type="text" placeholder="foler name" v-model="appData.folder_name"></CInput>
+        <CInput label="Andmebaas" type="text" placeholder="Database" v-model="appData.DB_DATABASE"></CInput>
+        <CInput label="Kasutajanimi" type="text" placeholder="Batabase username" v-model="appData.DB_USERNAME"></CInput>
+        <CInput label="Parool" type="text" placeholder="Database password" v-model="appData.DB_PASSWORD"></CInput>
         <CSelect
           v-if="roles.includes('admin')"
           label="User"
@@ -26,8 +26,8 @@
           :value.sync="appData.user_id"
         />
 
-        <CButton color="primary" @click="create()">Create</CButton>
-        <CButton color="primary" @click="goBack">Back</CButton>
+        <CButton color="primary" @click="create()">Loo</CButton>
+        <CButton color="primary" @click="goBack">tagasi</CButton>
 
       </CCardBody>
     </CCard>

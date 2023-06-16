@@ -6,8 +6,8 @@
           <CCard class="p-4">
             <CCardBody>
               <CForm @submit.prevent="login" method="POST">
-                <h1>Login</h1>
-                <p class="text-muted">Sign In to your account</p>
+                <h1>Logi sisse</h1>
+                <p class="text-muted">Logige oma kontole sisse</p>
                 <CInput
                   v-model="email"
                   prependHtml="<i class='cui-user'></i>"
@@ -27,11 +27,11 @@
                 </CInput>
                 <CRow>
                   <CCol col="6">
-                    <CButton type="submit" color="primary" class="px-4">Login</CButton>
+                    <CButton type="submit" color="primary" class="px-4">Logi sisse</CButton>
                   </CCol>
-                  <CCol col="6" class="text-right">
+                  <!-- <CCol col="6" class="text-right">
                     <CButton color="link" class="px-0">Forgot password?</CButton>
-                  </CCol>
+                  </CCol> -->
                 </CRow>
               </CForm>
             </CCardBody>
@@ -42,14 +42,14 @@
             class="text-center py-5 d-md-down-none"
             body-wrapper
           >
-            <h2>Sign up</h2>
+            <h2>Registreeri</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <CButton
               color="primary"
               class="active mt-3"
               @click="goRegister()"
             >
-              Register Now!
+              Registreeru kohe!
             </CButton>
           </CCard>
         </CCardGroup>
