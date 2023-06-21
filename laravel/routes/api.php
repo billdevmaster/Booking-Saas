@@ -97,5 +97,13 @@ Route::group(['middleware' => 'api'], function ($router) {
         Route::get('/test', 'AppController@test');
         Route::get('/get_app_end_date', 'AppController@get_app_end_date');
     });
+
+    Route::prefix('subscribe')->group(function ($router) {
+        Route::get('/get_subscriptions',        'SubscriptionController@get_subscriptions');
+        Route::post('/create_checkout_session',  'SubscriptionController@create_checkout_session');
+        Route::post('/new-webhook',               'SubscriptionController@webhook');
+        Route::get('/success',                    'SubscriptionController@success');
+        Route::post('/create_portal_session',                    'SubscriptionController@create_portal_session');
+    });
 });
 

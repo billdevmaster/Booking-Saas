@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Apps;
 use App\Models\Plans;
 use App\Models\AppPlans;
+use App\Models\AppSubscription;
 use DataTables;
 use Stripe\Stripe;
 use Stripe\Charge;
@@ -299,17 +300,23 @@ class AppController extends Controller
     $roles = explode(",", $user->menuroles);
     if (in_array("admin", $roles)) {
       $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.url', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
-        ->whereNull('deleted_at')
+        ->whereNull('apps.deleted_at')
         ->get();
     } else {
       $apps = Apps::select('apps.id', 'apps.APP_NAME', 'apps.url', 'apps.folder_name', 'apps.DB_DATABASE', 'apps.DB_USERNAME')
-        ->where("user_id", $user->id)
-        ->whereNull('deleted_at')
+        ->where("apps.user_id", $user->id)
+        ->whereNull('apps.deleted_at')
         ->get();
     }
     for($i = 0; $i < count($apps); $i++) {
-      $end_date = $this->get_app_enddate($apps[$i]->id);
-      $apps[$i]->end_date = $end_date;
+      $app_subscription = AppSubscription::where("app_id", $apps[$i]->id)->whereNull("deleted_at")->first();
+      if ($app_subscription != null) {
+        $apps[$i]->subscription_id = $app_subscription->subscription_id;
+        $apps[$i]->status = $app_subscription->status;
+      } else {
+        $apps[$i]->subscription_id = "";
+        $apps[$i]->status = "not subscribed";
+      }
     }
     return response()->json( compact('apps') );
   }

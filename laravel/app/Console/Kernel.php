@@ -14,7 +14,6 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
-        'App\Console\Commands\Subscribe',
     ];
 
     /**
@@ -25,8 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('subscribe:run')
-        ->everyMinute();
+        // $schedule->command('subscribe:run')
+        // ->everyMinute();
     }
 
     /**

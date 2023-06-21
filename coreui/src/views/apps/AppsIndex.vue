@@ -51,7 +51,7 @@ export default {
   data: () => {
     return {
       items: [],
-      fields: [{key: 'id', label: 'ID'}, {key: 'APP_NAME', label: 'RAKENDUSE NIMI'}, {key: 'url', label: 'URL'}, {key: 'folder_name', label: 'KAUTA NIMI'}, {key: 'DB_DATABASE', label: 'ANDMEBAAS'}, {key: 'DB_USERNAME', label: "ANDMEBAAS KASUTAJANIMI"}, {key: 'end_date', label: 'LÕPPKUUPÄEV'}, {key: 'edit', label: 'MUUDA'}, {key: 'delete', label: 'KUSTUTA'}],
+      fields: [{key: 'id', label: 'ID'}, {key: 'APP_NAME', label: 'RAKENDUSE NIMI'}, {key: 'url', label: 'URL'}, {key: 'folder_name', label: 'KAUTA NIMI'}, {key: 'DB_DATABASE', label: 'ANDMEBAAS'}, {key: 'DB_USERNAME', label: "ANDMEBAAS KASUTAJANIMI"}, {key: 'subscription_id', label: 'Tellimuse ID'}, {key: 'status', label: 'Olek'}, {key: 'edit', label: 'MUUDA'}, {key: 'delete', label: 'KUSTUTA'}],
       currentPage: 1,
       perPage: 5,
       totalRows: 0,

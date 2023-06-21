@@ -34,7 +34,7 @@
           </CCardBody>
         </CCard>
       </CCol>
-      <CCol col="12" lg="6">
+      <!-- <CCol col="12" lg="6">
         <CCard no-header>
           <CCardBody>
             <h3>
@@ -65,7 +65,7 @@
             </CRow>
           </CCardBody>
         </CCard>
-      </CCol>
+      </CCol> -->
     </CRow>
   </div>
 </template>
@@ -172,8 +172,8 @@ export default {
   },
   mounted: function () {
     this.getUsers();
-    this.getPlans();
-    this.getAppEnddate();
+    // this.getPlans();
+    // this.getAppEnddate();
     let self = this;
     this.roles = localStorage.getItem("roles").split(",");
     axios.get(  this.$apiAdress + '/api/apps/get_app?token=' + localStorage.getItem("api_token") + '&id=' + self.$route.params.id)
