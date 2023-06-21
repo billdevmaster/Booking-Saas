@@ -153,9 +153,6 @@ class SubscriptionController extends Controller
             case 'customer.subscription.updated':
               $subscription = $event->data->object; // contains a \Stripe\Subscription
               // Then define and call a method to handle the subscription being updated.
-              $newfile = fopen("tset.json", 'w');
-              fwrite($newfile, json_encode($subscription));
-              fclose($newfile);
               $this->handleSubscriptionUpdated($subscription);
               break;
             default:
