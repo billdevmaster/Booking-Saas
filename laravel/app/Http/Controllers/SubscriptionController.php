@@ -43,7 +43,7 @@ class SubscriptionController extends Controller
                 'success_url' => env('APP_URL') . '/api/subscribe/success?session_id={CHECKOUT_SESSION_ID}&app_url=' . $YOUR_DOMAIN,
                 'cancel_url' => $YOUR_DOMAIN . '/admin/subscribe',
                 'subscription_data' => [
-                    'trial_period_days' => 1,
+                    'trial_period_days' => 30,
                 ],
             ]);
             return response()->redirectTo($checkout_session->url);
